@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "coingeckopg"
+version = "0.1.0"
+description = ""
+authors = ["Elson Chan <elsonccjgmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.32.3"
+pydantic = "^2.10.6"
+retry = "^0.9.2"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.14.1"
+ruff = "^0.9.4"
+black = "^25.1.0"
+types-requests = "^2.32.0.20241016"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
