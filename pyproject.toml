@@ -14,12 +14,12 @@ sqlalchemy = "^2.0.38"
 python-dotenv = "^1.0.1"
 alembic = "^1.14.1"
 psycopg2-binary = "^2.9.10"
+types-requests = "^2.32.0.20241016"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.14.1"
 ruff = "^0.9.4"
 black = "^25.1.0"
-types-requests = "^2.32.0.20241016"
 
 
 [build-system]
