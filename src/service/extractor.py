@@ -9,7 +9,7 @@ from requests import request
 from retry import retry
 import logging
 
-from src.models.coin_list import CoinsList
+from src.models.raw_coin_list import RawCoinsList
 from src.utils.logger_utils import logger_setup
 
 logger: logging.Logger = logging.Logger(__name__)
@@ -25,7 +25,7 @@ class CoinListExtractor:
         backoff=2,
         jitter=(-0.01, 0.01)
     )
-    def coin_gecko_request(self) -> list[CoinsList]:
+    def coin_gecko_request(self) -> list[RawCoinsList]:
         url: str = "https://api.coingecko.com/api/v3/coins/list"
         try:
             response: requests.Response = requests.get(url)
@@ -33,7 +33,7 @@ class CoinListExtractor:
         except requests.HTTPError as e:
             logger.error(e)
             raise e
-        deserialized_response: list[CoinsList] = [CoinsList.model_validate(item) for item in response_json]
+        deserialized_response: list[RawCoinsList] = [RawCoinsList.model_validate(item) for item in response_json]
         return deserialized_response
 
 
