@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from sqlalchemy import Engine, create_engine, Table, insert
 
 from database.tables import coin_list_table
-from src.models.coin_list import CoinsList
+from src.models.raw_coin_list import RawCoinsList
 from src.service.extractor import CoinListExtractor
 
 
@@ -14,7 +14,7 @@ class CoinListDAO:
         self._engine: Engine = create_engine(connection_string)
         self._table: Table = coin_list_table
 
-    def insert(self, raw_results: list[CoinsList]) -> None:
+    def insert(self, raw_results: list[RawCoinsList]) -> None:
         with self._engine.begin() as conn:
             deserialized_results: list[dict[str, Any]] = [
                 raw_result.model_dump() for raw_result in raw_results
@@ -25,7 +25,7 @@ class CoinListDAO:
 if __name__ == "__main__":
     load_dotenv()
     coin_list_extractor: CoinListExtractor = CoinListExtractor()
-    extracted_raw_result: list[CoinsList] = coin_list_extractor.coin_gecko_request()
+    extracted_raw_result: list[RawCoinsList] = coin_list_extractor.coin_gecko_request()
     coin_list_dao: CoinListDAO = CoinListDAO(os.getenv("POSTGRES_URL"))
     coin_list_dao.insert(extracted_raw_result)
 
