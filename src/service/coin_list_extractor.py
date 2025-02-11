@@ -4,8 +4,8 @@
 """
 from typing import Any
 
+import aiohttp
 import requests
-from requests import request
 from retry import retry
 import logging
 
@@ -18,25 +18,24 @@ logger_setup(logger)
 
 class CoinListExtractor:
     @retry(
-        exceptions=requests.HTTPError,
+        exceptions=aiohttp.ClientError,
         tries=5,
         delay=0.01,
         max_delay=0.08,
         backoff=2,
         jitter=(-0.01, 0.01)
     )
-    def coin_gecko_request(self) -> list[RawCoinsList]:
+    async def coin_gecko_request(self) -> list[RawCoinsList]:
         url: str = "https://api.coingecko.com/api/v3/coins/list"
         try:
-            response: requests.Response = requests.get(url)
-            response_json: list[dict[str, Any]] = response.json()
-        except requests.HTTPError as e:
+            async with aiohttp.ClientSession() as sess:
+                async with sess.get(url, ssl=False) as response:
+                    if response.status == 200:
+                        response_json: list[dict[str, Any]] = await response.json()
+        except aiohttp.ClientError as e:
             logger.error(e)
             raise e
         deserialized_response: list[RawCoinsList] = [RawCoinsList.model_validate(item) for item in response_json]
         return deserialized_response
-
-
-
 
 
