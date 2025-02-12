@@ -19,13 +19,25 @@ mypy-boto3-s3 = "^1.36.15"
 boto3 = "^1.36.16"
 s3pathlib = "^2.3.1"
 pandas = "^2.2.3"
+aiohttp = "^3.11.12"
+asyncio = "^3.4.3"
+mypy = "^1.15.0"
+stubs = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 mypy = "^1.14.1"
 ruff = "^0.9.4"
 black = "^25.1.0"
+types-boto3 = "^1.36.18"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+strict = true
+ignore_missing_imports = true
+namespace_packages = true
+explicit_package_bases = true
+exclude = '^(\\.venv|venv|env|\\.git|node_modules)/'
